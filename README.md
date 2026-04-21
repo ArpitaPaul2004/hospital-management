@@ -1,63 +1,105 @@
 <div align="center">
 
 <img src="https://img.shields.io/badge/SAP-ABAP%20Simulation-0066CC?style=for-the-badge&logo=sap&logoColor=white"/>
-<img src="https://img.shields.io/badge/Project-Hospital%20Management-2E7D32?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/Tech-HTML%20%7C%20CSS%20%7C%20JS-F9A825?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/Status-Completed-blue?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/KIIT%20University-Project%202026-F9A825?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/B.Tech-CSSE%202023--27-1565C0?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/Status-Completed-2E7D32?style=for-the-badge"/>
 
-# 🏥 Hospital Management System  
-### SAP ABAP UI Simulation (Frontend Project)
+# 🏥 Hospital Management System
+## SAP ABAP Module Pool Simulation — Capstone Project
 
-> A web-based simulation of SAP ABAP Module Pool screens including Patient Registration, ALV Report, Selection Screen, and Dashboard.
+> **A complete simulation of SAP ABAP Hospital Management workflow including Patient Registration, ALV Reporting, Selection Screen filtering, and Dashboard analytics using frontend technologies.**
 
 </div>
 
 ---
 
-## 📌 Overview
+## 📌 Project Overview
 
-This project is a **Hospital Patient Management System** inspired by **SAP ABAP GUI screens**.  
-It simulates real SAP transactions like **data entry, reporting, filtering, and analytics dashboard** using HTML, CSS, and JavaScript.
+The **Hospital Management System** is designed to simulate real-world SAP ABAP Module Pool applications. This project replicates how hospital data is managed in enterprise systems, including patient registration, reporting, filtering, and analytics.
 
----
-
-## 🎯 Objective
-
-- Simulate SAP GUI using frontend technologies  
-- Manage patient data efficiently  
-- Provide real-time reporting and analytics  
-- Demonstrate ABAP concepts in UI form  
+It follows a structured SAP-like workflow where data is entered, processed, displayed, and analyzed through different screens.
 
 ---
 
-## 🧩 Features
+## 🎯 Problem Statement
 
-### 📝 Patient Registration
-- Add / Update patient details  
-- Input validation  
-- SAP-style status messages  
+Hospitals face challenges such as:
 
-### 📊 ALV Report
-- Table-based data display  
-- Sorting & filtering  
-- Total bill calculation  
+- **Manual patient data handling** leading to errors  
+- **Lack of centralized reporting system**  
+- **No real-time analytics dashboard**  
+- **Difficulty managing patient records efficiently**  
 
-### 🔍 Selection Screen
-- Filter by name, status, ward  
-- Bill range filtering  
-- Dynamic search results  
+This project solves these problems by implementing a **structured SAP-style digital system**.
 
-### 📈 Dashboard
-- Total patients  
-- Active / Discharged / Emergency  
-- Revenue statistics  
-- Doctor workload  
+---
+
+## 🗂️ Project Structure
+
+---
+
+## ⚙️ System Workflow — 4 Modules
+
+---
+
+## 🔹 Module 1 — Patient Registration
+
+Manage patient records using SAP-like input screen.
+
+| Feature | Description |
+|--------|------------|
+| Data Entry | Add patient details |
+| Validation | Mandatory field checks |
+| Update | Modify existing records |
+| Status | SAP-style success/error messages |
+
+---
+
+## 🔹 Module 2 — ALV Report
+
+Display patient data in structured table format.
+
+| Feature | Description |
+|--------|------------|
+| Grid Display | SAP ALV-style table |
+| Sorting | Sort by date/fields |
+| Filtering | Filter by conditions |
+| Total Bill | Auto calculation |
+
+---
+
+## 🔹 Module 3 — Selection Screen
+
+Filter and search patient data dynamically.
+
+| Filter | Description |
+|--------|------------|
+| Patient Name | Search by name |
+| Status | Active / Discharged / Emergency |
+| Ward | Ward-based filtering |
+| Bill Range | Min/Max amount |
+
+---
+
+## 🔹 Module 4 — Dashboard Analytics
+
+Visual representation of hospital data.
+
+| KPI | Description |
+|-----|------------|
+| Total Patients | Overall count |
+| Active Patients | Currently admitted |
+| Discharged | Completed cases |
+| Emergency | Critical cases |
+| Revenue | Total billing |
+| Doctor Load | Patients per doctor |
 
 ---
 
 ## 📸 Screenshots
 
-### 📝 Registration Screen
+### 📝 Registration
 ![Registration](screenshots/registration.png)
 
 ### 📊 ALV Report
@@ -71,13 +113,46 @@ It simulates real SAP transactions like **data entry, reporting, filtering, and 
 
 ---
 
+## 🚀 Features
+
+- ✅ SAP GUI-like interface  
+- ✅ ALV grid simulation  
+- ✅ Dynamic filtering system  
+- ✅ Dashboard analytics  
+- ✅ Interactive UI  
+- ✅ Real-time updates  
+
+---
+
 ## 🛠️ Tech Stack
 
-| Category | Technology |
-|--------|-----------|
+| Layer | Technology |
+|------|-----------|
 | Frontend | HTML5, CSS3, JavaScript |
 | UI Design | SAP GUI Inspired |
 | Logic | Vanilla JS |
+
+---
+
+## 🌟 Unique Highlights
+
+1. SAP ABAP Module Pool simulation  
+2. ALV-style reporting system  
+3. Real-time filtering (Selection Screen)  
+4. Dashboard KPI analytics  
+5. Fully frontend implementation  
+6. Real-world hospital workflow  
+
+---
+
+## 🔮 Future Improvements
+
+| Enhancement | Description |
+|------------|------------|
+| Database Integration | Store patient data permanently |
+| Backend (Node.js / SAP) | Real-time processing |
+| Authentication | Login system |
+| Mobile UI | Responsive design |
 
 ---
 
@@ -87,37 +162,6 @@ It simulates real SAP transactions like **data entry, reporting, filtering, and 
 
 ---
 
-## 📂 Project Structure
-
-
----
-
-## 🌟 Highlights
-
-- SAP ABAP simulation  
-- ALV-style reporting  
-- Real-time filtering  
-- Dashboard analytics  
-- Fully frontend-based  
-
----
-
-## 🔮 Future Scope
-
-- Backend integration (Node.js / SAP)  
-- Database storage  
-- Authentication system  
-- Mobile responsive UI  
-
----
-
-## 👩‍💻 Author
-
-**Arpita Paul (2330075)**  
-B.Tech Ecsc | KIIT University  
-
----
-
 ## 📜 Declaration
 
-This project is created for academic purposes and simulates SAP functionality using frontend technologies only.
+> This project is an original academic work created to simulate SAP ABAP functionality using frontend technologies.
