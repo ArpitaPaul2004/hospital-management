@@ -1,0 +1,471 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Courier New',monospace;background:transparent}
+  :root{
+    --sap-blue:#003087;--sap-lblue:#0a6ed1;--sap-green:#107e3e;
+    --sap-red:#bb0000;--sap-yellow:#e9730c;--sap-gray:#f5f5f5;
+    --sap-border:#d9d9d9;--sap-text:#333;--sap-white:#fff;
+  }
+  .sim-wrap{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:12px;border:0.5px solid var(--color-border-tertiary)}
+  .tab-bar{display:flex;gap:2px;background:#003087;padding:4px 4px 0;border-radius:6px 6px 0 0;flex-wrap:wrap}
+  .tab{padding:6px 14px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.7);cursor:pointer;border-radius:4px 4px 0 0;border:none;background:transparent;font-family:inherit;letter-spacing:0.3px;transition:all 0.15s}
+  .tab.active{background:#fff;color:#003087}
+  .tab:not(.active):hover{background:rgba(255,255,255,0.15);color:#fff}
+  .screen{background:#fff;border:1px solid #b0b0b0;border-radius:0 4px 4px 4px;padding:0;overflow:hidden;min-height:420px}
+  .sap-title{background:linear-gradient(90deg,#003087 0%,#0a6ed1 100%);color:#fff;padding:6px 14px;font-size:13px;font-weight:700;letter-spacing:0.5px;display:flex;align-items:center;gap:8px}
+  .sap-title .tcode{font-size:10px;background:rgba(255,255,255,0.2);padding:2px 7px;border-radius:3px;margin-left:auto}
+  .sap-toolbar{background:#f0f0f0;border-bottom:1px solid #c8c8c8;padding:4px 10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .sap-btn{background:#fff;border:1px solid #aaa;padding:3px 10px;font-size:11px;cursor:pointer;border-radius:2px;font-family:inherit;color:#333;transition:all 0.1s}
+  .sap-btn:hover{background:#e8f0fe;border-color:#0a6ed1}
+  .sap-btn.primary{background:#0a6ed1;color:#fff;border-color:#0a6ed1}
+  .sap-btn.primary:hover{background:#003087}
+  .sap-btn.danger{background:#bb0000;color:#fff;border-color:#bb0000}
+  .screen-body{padding:14px}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .form-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+  .form-label{font-size:11px;color:#555;min-width:110px;text-align:right;flex-shrink:0}
+  .form-input{border:1px solid #aaa;padding:3px 7px;font-size:12px;font-family:inherit;border-radius:2px;flex:1;background:#fff;color:#333;max-width:200px}
+  .form-input:focus{outline:none;border-color:#0a6ed1;background:#f0f7ff}
+  .form-select{border:1px solid #aaa;padding:3px 7px;font-size:12px;font-family:inherit;border-radius:2px;flex:1;max-width:200px}
+  .status-bar{background:#e8e8e8;border-top:1px solid #c0c0c0;padding:3px 10px;font-size:11px;color:#333;min-height:24px}
+  .status-bar.success{color:#107e3e;background:#eaf5ea}
+  .status-bar.error{color:#bb0000;background:#fff0f0}
+  .status-bar.info{color:#0a6ed1;background:#e8f0fe}
+  .section-title{font-size:11px;font-weight:700;color:#003087;background:#dce9f8;padding:3px 10px;margin-bottom:10px;border-left:3px solid #0a6ed1}
+  .alv-table{width:100%;border-collapse:collapse;font-size:11px;font-family:inherit}
+  .alv-table th{background:#003087;color:#fff;padding:5px 8px;text-align:left;font-weight:600;font-size:10px;letter-spacing:0.3px;white-space:nowrap}
+  .alv-table td{padding:4px 8px;border-bottom:0.5px solid #e0e0e0;white-space:nowrap;font-size:11px}
+  .alv-table tr:nth-child(even){background:#f7f7ff}
+  .alv-table tr:not(.footer-row):hover{background:#dce9f8;cursor:pointer}
+  .alv-table .footer-row td{background:#e8e8e8;font-weight:700;color:#333;border-top:2px solid #003087}
+  .light-red{color:#bb0000;font-size:14px}
+  .light-yellow{color:#e9730c;font-size:14px}
+  .light-green{color:#107e3e;font-size:14px}
+  .popup-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:100;display:none}
+  .popup-overlay.show{display:flex}
+  .popup{background:#fff;border:2px solid #003087;border-radius:4px;min-width:380px;max-width:500px;font-family:'Courier New',monospace}
+  .popup-head{background:#003087;color:#fff;padding:7px 14px;font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .popup-body{padding:16px;font-size:11px}
+  .popup-row{display:flex;gap:8px;margin-bottom:5px;border-bottom:0.5px solid #f0f0f0;padding-bottom:5px}
+  .popup-key{color:#555;min-width:110px;font-weight:600}
+  .popup-val{color:#003087;font-weight:700}
+  .close-btn{background:none;border:none;color:#fff;font-size:16px;cursor:pointer;line-height:1}
+  .sel-block{background:#f5f8ff;border:1px solid #c0d0ea;border-radius:3px;padding:10px;margin-bottom:10px}
+  .sel-block-title{font-size:10px;font-weight:700;color:#003087;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px}
+  .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+  .kpi-card{background:#f5f8ff;border:1px solid #c0d0ea;border-radius:4px;padding:12px 10px;text-align:center}
+  .kpi-num{font-size:26px;font-weight:700;line-height:1.1}
+  .kpi-lbl{font-size:10px;color:#555;margin-top:4px}
+  .kpi-card.red .kpi-num{color:#bb0000}
+  .kpi-card.yellow .kpi-num{color:#e9730c}
+  .kpi-card.green .kpi-num{color:#107e3e}
+  .kpi-card.blue .kpi-num{color:#003087}
+  .kpi-card.teal .kpi-num{color:#0a6ed1}
+  .tag{display:inline-block;padding:1px 6px;border-radius:2px;font-size:10px;font-weight:700}
+  .tag-E{background:#ffecec;color:#bb0000;border:1px solid #ffb0b0}
+  .tag-A{background:#fff8e0;color:#a05000;border:1px solid #ffd080}
+  .tag-D{background:#eafaea;color:#107e3e;border:1px solid #90d0a0}
+  .alv-wrap{overflow-x:auto;border:1px solid #c0c0c0}
+  .page-title{font-size:12px;font-weight:700;color:#003087;border-bottom:1px solid #d0d8ea;padding-bottom:8px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+  .page-title .info{font-size:10px;color:#888;font-weight:400}
+  .chart-bar-wrap{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .bar-row{display:flex;align-items:center;gap:8px}
+  .bar-label{font-size:10px;color:#555;width:100px;text-align:right;flex-shrink:0}
+  .bar-track{flex:1;background:#e8e8e8;border-radius:2px;height:18px;overflow:hidden}
+  .bar-fill{height:100%;border-radius:2px;display:flex;align-items:center;padding-left:6px;font-size:10px;font-weight:700;color:#fff;transition:width 0.6s ease}
+  .dot-badge{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+  .msg-box{background:#eafaea;border:1px solid #9ad0a0;border-radius:3px;padding:8px 12px;font-size:11px;color:#107e3e;margin-top:10px;display:none}
+  .msg-box.err{background:#fff0f0;border-color:#ffb0b0;color:#bb0000}
+  .msg-box.show{display:block}
+</style>
+
+<div class="sim-wrap">
+  <div class="tab-bar">
+    <button class="tab active" onclick="showTab('reg')">📋 Patient Registration (ZHOSP_REG)</button>
+    <button class="tab" onclick="showTab('alv')">📊 ALV Report (ZHOSP_RPT)</button>
+    <button class="tab" onclick="showTab('sel')">🔍 Selection Screen</button>
+    <button class="tab" onclick="showTab('dash')">📈 Dashboard (ZHOSP_DASH)</button>
+  </div>
+
+  <!-- TAB 1: REGISTRATION -->
+  <div id="tab-reg" class="screen">
+    <div class="sap-title">🏥 Hospital Patient Management — Registration <span class="tcode">T-Code: ZHOSP_REG</span></div>
+    <div class="sap-toolbar">
+      <button class="sap-btn primary" onclick="savePatient()">💾 Save (F5)</button>
+      <button class="sap-btn" onclick="clearForm()">🗑️ Clear (F6)</button>
+      <button class="sap-btn" onclick="showTab('alv')">📊 Display Report (F7)</button>
+      <button class="sap-btn danger" onclick="exitSim()">✖ Exit (F15)</button>
+    </div>
+    <div class="screen-body">
+      <div class="page-title">Patient Registration Form <span class="info">Module Pool: ZMP_HOSPITAL_MGMT | Screen: 0100</span></div>
+      <div class="form-grid">
+        <div>
+          <div class="section-title">Personal Information</div>
+          <div class="form-row"><span class="form-label">Patient ID *</span><input class="form-input" id="pid" placeholder="P011" maxlength="10"></div>
+          <div class="form-row"><span class="form-label">Patient Name *</span><input class="form-input" id="pname" placeholder="Full Name" style="max-width:220px"></div>
+          <div class="form-row"><span class="form-label">Date of Birth *</span><input class="form-input" id="dob" type="date"></div>
+          <div class="form-row"><span class="form-label">Gender</span>
+            <select class="form-select" id="gender"><option value="M">Male</option><option value="F">Female</option><option value="O">Other</option></select>
+          </div>
+          <div class="form-row"><span class="form-label">Blood Group</span>
+            <select class="form-select" id="blood"><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select>
+          </div>
+          <div class="form-row"><span class="form-label">Contact No.</span><input class="form-input" id="contact" placeholder="9XXXXXXXXX"></div>
+        </div>
+        <div>
+          <div class="section-title">Admission Details</div>
+          <div class="form-row"><span class="form-label">Admit Date</span><input class="form-input" id="admdt" type="date"></div>
+          <div class="form-row"><span class="form-label">Ward No.</span>
+            <select class="form-select" id="ward"><option>W01</option><option>W02</option><option>W03</option><option>W04</option><option>W05</option></select>
+          </div>
+          <div class="form-row"><span class="form-label">Bed No.</span><input class="form-input" id="bed" placeholder="B-01"></div>
+          <div class="form-row"><span class="form-label">Doctor ID</span>
+            <select class="form-select" id="docid"><option value="DOC001">DOC001 – Dr. Kapoor</option><option value="DOC002">DOC002 – Dr. Rao</option><option value="DOC003">DOC003 – Dr. Lal</option><option value="DOC004">DOC004 – Dr. Das</option></select>
+          </div>
+          <div class="form-row"><span class="form-label">Diagnosis</span><input class="form-input" id="diag" placeholder="Condition" style="max-width:220px"></div>
+          <div class="form-row"><span class="form-label">Total Bill (₹)</span><input class="form-input" id="bill" type="number" placeholder="0.00"></div>
+          <div class="form-row"><span class="form-label">Status</span>
+            <select class="form-select" id="status"><option value="A">A – Admitted (Active)</option><option value="D">D – Discharged</option><option value="E">E – Emergency</option></select>
+          </div>
+        </div>
+      </div>
+      <div id="reg-msg" class="msg-box"></div>
+    </div>
+    <div class="status-bar" id="reg-bar">Ready | System: ABAP | User: ARPITA_PAUL | Date: 21.04.2026</div>
+  </div>
+
+  <!-- TAB 2: ALV REPORT -->
+  <div id="tab-alv" class="screen" style="display:none">
+    <div class="sap-title">📊 Patient Report — ALV Grid Display <span class="tcode">T-Code: ZHOSP_RPT</span></div>
+    <div class="sap-toolbar">
+      <button class="sap-btn primary" onclick="refreshALV()">🔄 Execute (F8)</button>
+      <button class="sap-btn" onclick="sortALV()">⬆ Sort</button>
+      <button class="sap-btn" onclick="filterALV()">🔍 Filter</button>
+      <button class="sap-btn">📥 Download</button>
+      <button class="sap-btn">💾 Save Variant</button>
+      <span style="font-size:10px;color:#555;margin-left:auto">Double-click row for detail popup ↓</span>
+    </div>
+    <div class="screen-body" style="padding:10px">
+      <div style="background:#dce9f8;padding:6px 10px;font-size:11px;font-weight:700;color:#003087;border-left:3px solid #0a6ed1;margin-bottom:8px">
+        HOSPITAL PATIENT MANAGEMENT SYSTEM &nbsp;|&nbsp; Student: Arpita Paul | Roll: 2330075 | B.Tech ECSc &nbsp;|&nbsp; Report Date: 21.04.2026
+      </div>
+      <div style="font-size:10px;color:#555;margin-bottom:6px">
+        <span class="dot-badge" style="background:#bb0000"></span>Emergency &nbsp;
+        <span class="dot-badge" style="background:#e9730c"></span>Active &nbsp;
+        <span class="dot-badge" style="background:#107e3e"></span>Discharged &nbsp;&nbsp;
+        <strong id="alv-count">10</strong> records found
+      </div>
+      <div class="alv-wrap">
+        <table class="alv-table" id="alv-tbl">
+          <thead>
+            <tr>
+              <th>●</th><th>Patient ID</th><th>Name</th><th>DOB</th><th>Gender</th><th>Blood</th>
+              <th>Admit Date</th><th>Ward</th><th>Doctor</th><th>Specialization</th>
+              <th>Diagnosis</th><th>Bill (₹)</th><th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="alv-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="status-bar info" id="alv-bar">Click a row to see patient detail</div>
+  </div>
+
+  <!-- TAB 3: SELECTION SCREEN -->
+  <div id="tab-sel" class="screen" style="display:none">
+    <div class="sap-title">🔍 Selection Screen — Patient Search Criteria <span class="tcode">Z_HOSP_PATIENT_REPORT</span></div>
+    <div class="sap-toolbar">
+      <button class="sap-btn primary" onclick="runReport()">▶ Execute (F8)</button>
+      <button class="sap-btn" onclick="clearSel()">🗑️ Reset</button>
+      <button class="sap-btn">💾 Variant</button>
+    </div>
+    <div class="screen-body">
+      <div class="sel-block">
+        <div class="sel-block-title">📋 Block 1: Patient Search Criteria</div>
+        <div class="form-row"><span class="form-label">Patient ID</span><input class="form-input" id="sel-pid" placeholder="e.g. P001 to P010"></div>
+        <div class="form-row"><span class="form-label">Patient Name</span><input class="form-input" id="sel-name" placeholder="Search by name..."></div>
+        <div class="form-row"><span class="form-label">Admit Date From</span><input class="form-input" id="sel-from" type="date"></div>
+        <div class="form-row"><span class="form-label">Admit Date To</span><input class="form-input" id="sel-to" type="date"></div>
+        <div class="form-row"><span class="form-label">Doctor ID</span><input class="form-input" id="sel-doc" placeholder="e.g. DOC001"></div>
+      </div>
+      <div class="sel-block">
+        <div class="sel-block-title">⚙️ Block 2: Filter Options</div>
+        <div class="form-row"><span class="form-label">Status</span>
+          <select class="form-select" id="sel-stat"><option value="">All</option><option value="A">A – Active</option><option value="D">D – Discharged</option><option value="E">E – Emergency</option></select>
+        </div>
+        <div class="form-row"><span class="form-label">Ward No.</span>
+          <select class="form-select" id="sel-ward"><option value="">All Wards</option><option>W01</option><option>W02</option><option>W03</option><option>W04</option><option>W05</option></select>
+        </div>
+      </div>
+      <div class="sel-block">
+        <div class="sel-block-title">💰 Block 3: Bill Amount Range</div>
+        <div class="form-row"><span class="form-label">Min Bill (₹)</span><input class="form-input" id="sel-min" type="number" placeholder="0"></div>
+        <div class="form-row"><span class="form-label">Max Bill (₹)</span><input class="form-input" id="sel-max" type="number" placeholder="999999"></div>
+      </div>
+      <div id="sel-msg" class="msg-box"></div>
+    </div>
+    <div class="status-bar" id="sel-bar">Set selection criteria and click Execute (F8)</div>
+  </div>
+
+  <!-- TAB 4: DASHBOARD -->
+  <div id="tab-dash" class="screen" style="display:none">
+    <div class="sap-title">📈 Hospital Dashboard — KPI Summary <span class="tcode">T-Code: ZHOSP_DASH</span></div>
+    <div class="sap-toolbar">
+      <button class="sap-btn primary" onclick="refreshDash()">🔄 Refresh</button>
+      <button class="sap-btn">🖨️ Print</button>
+    </div>
+    <div class="screen-body">
+      <div class="page-title">Real-time Hospital Statistics <span class="info">Program: Z_HOSP_DASHBOARD | Date: 21.04.2026</span></div>
+      <div class="kpi-grid">
+        <div class="kpi-card blue"><div class="kpi-num" id="kpi-total">10</div><div class="kpi-lbl">Total Patients</div></div>
+        <div class="kpi-card yellow"><div class="kpi-num" id="kpi-active">5</div><div class="kpi-lbl">Currently Admitted</div></div>
+        <div class="kpi-card green"><div class="kpi-num" id="kpi-disch">3</div><div class="kpi-lbl">Discharged</div></div>
+        <div class="kpi-card red"><div class="kpi-num" id="kpi-emrg">2</div><div class="kpi-lbl">Emergency Cases</div></div>
+        <div class="kpi-card teal"><div class="kpi-num" id="kpi-rev">₹4.17L</div><div class="kpi-lbl">Total Revenue</div></div>
+        <div class="kpi-card blue"><div class="kpi-num" id="kpi-avg">₹41.7K</div><div class="kpi-lbl">Avg Bill/Patient</div></div>
+      </div>
+      <div class="section-title" style="margin-top:16px">Bill Distribution by Patient</div>
+      <div class="chart-bar-wrap" id="chart-bars"></div>
+      <div class="section-title" style="margin-top:14px">Doctor Workload</div>
+      <div class="chart-bar-wrap" id="doc-bars"></div>
+    </div>
+    <div class="status-bar success">Dashboard loaded | ABAP SELECT SUM/COUNT executed | COMMIT WORK: N/A (Read Only)</div>
+  </div>
+</div>
+
+<!-- POPUP DETAIL -->
+<div class="popup-overlay" id="popup-overlay" onclick="closePopup(event)">
+  <div class="popup">
+    <div class="popup-head">Patient Detail View — Double-Click Drill Down <button class="close-btn" onclick="closePopup()">✕</button></div>
+    <div class="popup-body" id="popup-body"></div>
+  </div>
+</div>
+
+<script>
+const patients = [
+  {id:'P001', name:'Arpita Paul', dob:'2004-05-13', gender:'F', blood:'A+', admit:'2026-04-01', ward:'W01', docid:'DOC001', doc:'Dr. Kapoor', spec:'Cardiology', diag:'Fever', bill:12000, status:'A'},
+
+  {id:'P002', name:'Debarati Mandal', dob:'2004-09-21', gender:'F', blood:'B+', admit:'2026-04-02', ward:'W02', docid:'DOC002', doc:'Dr. Rao', spec:'Endocrinology', diag:'Diabetes', bill:18000, status:'D'},
+
+  {id:'P003', name:'Anusha Bakshi', dob:'2003-01-15', gender:'F', blood:'O+', admit:'2026-04-03', ward:'W03', docid:'DOC003', doc:'Dr. Lal', spec:'Nephrology', diag:'Kidney Issue', bill:25000, status:'A'},
+
+  {id:'P004', name:'Anit Paul', dob:'1996-07-10', gender:'M', blood:'AB+', admit:'2026-04-04', ward:'W01', docid:'DOC001', doc:'Dr. Kapoor', spec:'Cardiology', diag:'Chest Pain', bill:30000, status:'E'},
+
+  {id:'P005', name:'Sneha Roy', dob:'2000-11-25', gender:'F', blood:'A-', admit:'2026-04-05', ward:'W04', docid:'DOC004', doc:'Dr. Das', spec:'Orthopedics', diag:'Fracture', bill:22000, status:'A'},
+
+  {id:'P006', name:'Ashmita Ghosh', dob:'2002-06-30', gender:'F', blood:'B-', admit:'2026-04-06', ward:'W02', docid:'DOC002', doc:'Dr. Rao', spec:'Endocrinology', diag:'Thyroid', bill:15000, status:'D'},
+
+  {id:'P007', name:'Madhumita Roy', dob:'1978-10-05', gender:'F', blood:'O-', admit:'2026-04-07', ward:'W05', docid:'DOC003', doc:'Dr. Lal', spec:'Nephrology', diag:'Liver Problem', bill:40000, status:'E'},
+
+  {id:'P008', name:'Debeshi Chakraborty', dob:'2011-12-05', gender:'F', blood:'AB-', admit:'2026-04-08', ward:'W01', docid:'DOC001', doc:'Dr. Kapoor', spec:'Cardiology', diag:'Weakness', bill:10000, status:'A'},
+
+  {id:'P009', name:'Subhajit Banerjee', dob:'2001-08-14', gender:'M', blood:'B+', admit:'2026-04-09', ward:'W03', docid:'DOC004', doc:'Dr. Das', spec:'Orthopedics', diag:'Back Pain', bill:27000, status:'A'},
+
+  {id:'P010', name:'Sourav Chatterjee', dob:'2000-02-20', gender:'M', blood:'O+', admit:'2026-04-10', ward:'W02', docid:'DOC002', doc:'Dr. Rao', spec:'Endocrinology', diag:'Sugar Issue', bill:20000, status:'D'}
+];
+let displayData=[...patients];
+
+function lightIcon(s){return s==='E'?'🔴':s==='A'?'🟡':'🟢'}
+function statusTag(s){
+  const m={E:'Emergency',A:'Active',D:'Discharged'};
+  return `<span class="tag tag-${s}">${m[s]||s}</span>`;
+}
+
+function renderALV(data){
+  const tbody=document.getElementById('alv-body');
+  let total=0;
+  tbody.innerHTML=data.map((p,i)=>{
+    total+=p.bill;
+    return `<tr onclick="showDetail(${i})">
+      <td>${lightIcon(p.status)}</td>
+      <td style="color:#0a6ed1;font-weight:700">${p.id}</td>
+      <td>${p.name}</td><td>${p.dob}</td>
+      <td>${p.gender==='M'?'Male':'Female'}</td>
+      <td>${p.blood}</td><td>${p.admit}</td>
+      <td>${p.ward}</td>
+      <td style="white-space:nowrap">${p.doc}</td>
+      <td>${p.spec}</td><td>${p.diag}</td>
+      <td style="text-align:right;font-weight:600">₹${p.bill.toLocaleString('en-IN')}</td>
+      <td>${statusTag(p.status)}</td>
+    </tr>`;
+  }).join('')+
+  `<tr class="footer-row">
+    <td colspan="11" style="text-align:right;padding-right:8px">Total Bill (${data.length} records):</td>
+    <td style="text-align:right">₹${total.toLocaleString('en-IN')}</td>
+    <td></td>
+  </tr>`;
+  document.getElementById('alv-count').textContent=data.length;
+}
+
+function showDetail(idx){
+  const p=displayData[idx];
+  if(!p)return;
+  const rows=[
+    ['Patient ID',p.id],['Patient Name',p.name],['Date of Birth',p.dob],
+    ['Gender',p.gender==='M'?'Male':'Female'],['Blood Group',p.blood],
+    ['Admit Date',p.admit],['Ward No.',p.ward],
+    ['Doctor',p.doc],['Specialization',p.spec],
+    ['Diagnosis',p.diag],['Total Bill','₹'+p.bill.toLocaleString('en-IN')],
+    ['Status',p.status==='E'?'Emergency':p.status==='A'?'Active':'Discharged']
+  ];
+  document.getElementById('popup-body').innerHTML=rows.map(r=>
+    `<div class="popup-row"><span class="popup-key">${r[0]}:</span><span class="popup-val">${r[1]}</span></div>`
+  ).join('');
+  document.getElementById('popup-overlay').classList.add('show');
+  document.getElementById('alv-bar').textContent=`Detail: ${p.name} | ID: ${p.id} | Bill: ₹${p.bill.toLocaleString('en-IN')}`;
+  document.getElementById('alv-bar').className='status-bar info';
+}
+
+function closePopup(e){
+  if(!e||e.target===document.getElementById('popup-overlay')||e.currentTarget.tagName==='BUTTON')
+    document.getElementById('popup-overlay').classList.remove('show');
+}
+
+function showTab(t){
+  ['reg','alv','sel','dash'].forEach(id=>{
+    document.getElementById('tab-'+id).style.display='none';
+  });
+  document.querySelectorAll('.tab').forEach((b,i)=>{
+    b.classList.toggle('active',['reg','alv','sel','dash'][i]===t);
+  });
+  document.getElementById('tab-'+t).style.display='block';
+  if(t==='alv'){renderALV(displayData);}
+  if(t==='dash'){renderDash();}
+}
+
+function savePatient(){
+  const pid=document.getElementById('pid').value.trim();
+  const pname=document.getElementById('pname').value.trim();
+  const dob=document.getElementById('dob').value;
+  const msg=document.getElementById('reg-msg');
+  const bar=document.getElementById('reg-bar');
+
+  if(!pid){
+    msg.textContent='❌ ERROR: Patient ID is mandatory! (SY-SUBRC = 4)'; msg.className='msg-box err show';
+    bar.textContent='Error: Mandatory field Patient ID is missing';bar.className='status-bar error';return;
+  }
+  if(!pname){
+    msg.textContent='❌ ERROR: Patient Name is mandatory!'; msg.className='msg-box err show';
+    bar.textContent='Error: Mandatory field Patient Name is missing';bar.className='status-bar error';return;
+  }
+  if(!dob){
+    msg.textContent='❌ ERROR: Date of Birth is mandatory!'; msg.className='msg-box err show';
+    bar.textContent='Error: Mandatory field DOB is missing';bar.className='status-bar error';return;
+  }
+
+  const exists=patients.find(p=>p.id===pid);
+  const docSel=document.getElementById('docid').value;
+  const docNames={'DOC001':'Dr. Arvind Kapoor','DOC002':'Dr. Sunita Rao','DOC003':'Dr. Mohan Lal','DOC004':'Dr. Riya Das'};
+  const specMap={'DOC001':'Cardiology','DOC002':'Endocrinology','DOC003':'Nephrology','DOC004':'Orthopedics'};
+  const newP={
+    id:pid,name:pname,dob,gender:document.getElementById('gender').value,
+    blood:document.getElementById('blood').value,admit:document.getElementById('admdt').value,
+    ward:document.getElementById('ward').value,docid:docSel,doc:docNames[docSel],
+    spec:specMap[docSel],diag:document.getElementById('diag').value,
+    bill:parseFloat(document.getElementById('bill').value)||0,
+    status:document.getElementById('status').value
+  };
+  if(exists){
+    Object.assign(exists,newP);
+    msg.textContent='✅ SUCCESS: Patient record updated successfully! UPDATE ZT_PATIENT_MASTER → SY-SUBRC = 0 | COMMIT WORK done.';
+  } else {
+    patients.push(newP);
+    displayData=[...patients];
+    msg.textContent='✅ SUCCESS: New patient registered! INSERT ZT_PATIENT_MASTER → SY-SUBRC = 0 | COMMIT WORK done.';
+  }
+  msg.className='msg-box show';
+  bar.textContent=`COMMIT WORK | Record saved for: ${pname} | Patient ID: ${pid}`;
+  bar.className='status-bar success';
+}
+
+function clearForm(){
+  ['pid','pname','dob','contact','admdt','bed','diag','bill'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('reg-msg').className='msg-box';
+  document.getElementById('reg-bar').textContent='Screen Cleared | Ready for new entry';
+  document.getElementById('reg-bar').className='status-bar info';
+}
+
+function exitSim(){
+  document.getElementById('reg-bar').textContent='LEAVE PROGRAM executed | Session ended';
+  document.getElementById('reg-bar').className='status-bar';
+}
+
+function refreshALV(){displayData=[...patients];renderALV(displayData);document.getElementById('alv-bar').textContent='ALV Grid refreshed | '+patients.length+' records loaded';}
+function sortALV(){displayData.sort((a,b)=>a.admit.localeCompare(b.admit));renderALV(displayData);document.getElementById('alv-bar').textContent='Sorted by Admit Date ascending';}
+function filterALV(){
+  displayData=patients.filter(p=>p.status==='E');
+  renderALV(displayData);
+  document.getElementById('alv-bar').textContent='Filter applied: Status = Emergency | '+displayData.length+' records';
+}
+
+function runReport(){
+  const msg=document.getElementById('sel-msg');
+  const min=parseFloat(document.getElementById('sel-min').value)||0;
+  const max=parseFloat(document.getElementById('sel-max').value)||Infinity;
+  if(min>max&&max!==Infinity){
+    msg.textContent='❌ AT SELECTION-SCREEN: Min Bill cannot exceed Max Bill amount! (Type E message)';
+    msg.className='msg-box err show';
+    document.getElementById('sel-bar').textContent='Error at selection screen — correct your input';
+    document.getElementById('sel-bar').className='status-bar error';
+    return;
+  }
+  const stat=document.getElementById('sel-stat').value;
+  const ward=document.getElementById('sel-ward').value;
+  const name=document.getElementById('sel-name').value.toLowerCase();
+  displayData=patients.filter(p=>{
+    if(stat&&p.status!==stat)return false;
+    if(ward&&p.ward!==ward)return false;
+    if(name&&!p.name.toLowerCase().includes(name))return false;
+    if(p.bill<min)return false;
+    if(max!==Infinity&&p.bill>max)return false;
+    return true;
+  });
+  msg.textContent=`✅ START-OF-SELECTION executed | ${displayData.length} records fetched via SELECT JOIN | Switching to ALV Grid...`;
+  msg.className='msg-box show';
+  document.getElementById('sel-bar').textContent=`Query complete | ${displayData.length} records | REUSE_ALV_GRID_DISPLAY called`;
+  document.getElementById('sel-bar').className='status-bar success';
+  setTimeout(()=>showTab('alv'),1200);
+}
+
+function clearSel(){
+  ['sel-pid','sel-name','sel-from','sel-to','sel-doc','sel-min','sel-max'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+  document.getElementById('sel-stat').value='';
+  document.getElementById('sel-ward').value='';
+  document.getElementById('sel-msg').className='msg-box';
+  displayData=[...patients];
+  document.getElementById('sel-bar').textContent='Selection screen reset | All values cleared';
+}
+
+function renderDash(){
+  const maxBill=Math.max(...patients.map(p=>p.bill));
+  document.getElementById('chart-bars').innerHTML=patients.map(p=>{
+    const pct=Math.round(p.bill/maxBill*100);
+    const color=p.status==='E'?'#bb0000':p.status==='A'?'#e9730c':'#107e3e';
+    return `<div class="bar-row">
+      <span class="bar-label">${p.id}:${p.name.split(' ')[0]}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}">₹${(p.bill/1000).toFixed(0)}K</div></div>
+    </div>`;
+  }).join('');
+  const docCount={'DOC001':0,'DOC002':0,'DOC003':0,'DOC004':0};
+  const docNames={'DOC001':'Dr. Kapoor','DOC002':'Dr. Rao','DOC003':'Dr. Lal','DOC004':'Dr. Das'};
+  patients.forEach(p=>{if(p.docid)docCount[p.docid]++});
+  const maxDoc=Math.max(...Object.values(docCount));
+  document.getElementById('doc-bars').innerHTML=Object.entries(docCount).map(([k,v])=>{
+    const pct=Math.round(v/maxDoc*100);
+    return `<div class="bar-row">
+      <span class="bar-label">${docNames[k]}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:#0a6ed1">${v} patient${v!==1?'s':''}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function refreshDash(){renderDash();}
+
+renderALV(displayData);
+renderDash();
+</script>
