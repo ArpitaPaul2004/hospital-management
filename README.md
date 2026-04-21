@@ -161,7 +161,12 @@ Visual representation of hospital data.
 👉 https://ArpitaPaul2004.github.io/hospital-management/
 
 ---
+## 👩‍💻 Author
 
+**Arpita Paul**  
+B.Tech CSSE | KIIT University  
+
+---
 ## 📜 Declaration
 
 > This project is an original academic work created to simulate SAP ABAP functionality using frontend technologies.
