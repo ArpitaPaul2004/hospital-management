@@ -163,8 +163,8 @@ Visual representation of hospital data.
 ---
 ## 👩‍💻 Author
 
-**Arpita Paul**  
-B.Tech CSSE | KIIT University  
+**Arpita Paul (2330075)**  
+B.Tech ECSc | KIIT University  
 
 ---
 ## 📜 Declaration
