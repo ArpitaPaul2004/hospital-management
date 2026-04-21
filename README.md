@@ -4,6 +4,8 @@
 <img src="https://img.shields.io/badge/KIIT%20University-Project%202026-F9A825?style=for-the-badge"/>
 <img src="https://img.shields.io/badge/B.Tech-ECSc%202023--27-1565C0?style=for-the-badge"/>
 <img src="https://img.shields.io/badge/Status-Completed-2E7D32?style=for-the-badge"/>
+
+</div>
 # 🏥 Hospital Management System
 ## SAP ABAP Module Pool Simulation — Capstone Project
 
