@@ -1,10 +1,9 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/SAP-ABAP%20Simulation-0066CC?style=for-the-badge&logo=sap&logoColor=white"/>
+<img src="https://img.shields.io/badge/SAP-Hospital%20Management-0066CC?style=for-the-badge&logo=sap&logoColor=white"/>
 <img src="https://img.shields.io/badge/KIIT%20University-Project%202026-F9A825?style=for-the-badge"/>
-<img src="https://img.shields.io/badge/B.Tech-CSSE%202023--27-1565C0?style=for-the-badge"/>
+<img src="https://img.shields.io/badge/B.Tech-ECSc-2023--27-1565C0?style=for-the-badge"/>
 <img src="https://img.shields.io/badge/Status-Completed-2E7D32?style=for-the-badge"/>
-
 # 🏥 Hospital Management System
 ## SAP ABAP Module Pool Simulation — Capstone Project
 
