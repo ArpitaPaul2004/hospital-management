@@ -6,8 +6,13 @@
 <img src="https://img.shields.io/badge/Status-Completed-2E7D32?style=for-the-badge"/>
 
 </div>
-# 🏥 Hospital Management System
-## SAP ABAP Module Pool Simulation — Capstone Project
+
+<div align="center">
+
+# 🏥 Hospital Management System  
+### SAP ABAP Module Pool Simulation — Capstone Project
+
+</div>
 
 > **A complete simulation of SAP ABAP Hospital Management workflow including Patient Registration, ALV Reporting, Selection Screen filtering, and Dashboard analytics using frontend technologies.**
 
